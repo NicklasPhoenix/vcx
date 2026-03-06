@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   return (
@@ -9,18 +10,12 @@ export default function Home() {
           AI-powered codebase audit tool. Analyze your code for security vulnerabilities, performance issues, and best practices.
         </p>
         <div className="flex gap-4 justify-center">
-          <Link
-            href="/login"
-            className="rounded-md bg-blue-600 px-6 py-3 text-white hover:bg-blue-700 transition-colors"
-          >
-            Sign In
-          </Link>
-          <Link
-            href="/signup"
-            className="rounded-md border border-gray-300 px-6 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          >
-            Get Started
-          </Link>
+          <Button asChild>
+            <Link href="/login">Sign In</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link href="/signup">Get Started</Link>
+          </Button>
         </div>
       </div>
     </main>

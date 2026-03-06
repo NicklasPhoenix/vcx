@@ -1,6 +1,7 @@
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export default async function DashboardLayout({
   children,
@@ -13,8 +14,8 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
+    <div className="min-h-screen bg-muted/50">
+      <nav className="bg-background shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 justify-between">
             <div className="flex">
@@ -24,20 +25,20 @@ export default async function DashboardLayout({
               <div className="ml-6 flex space-x-4 items-center">
                 <Link
                   href="/dashboard"
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+                  className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
                   Dashboard
                 </Link>
                 <Link
                   href="/settings/billing"
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+                  className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
                   Billing
                 </Link>
               </div>
             </div>
-            <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-4">
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-muted-foreground">
                 {session.user?.email}
               </span>
               <form
@@ -47,12 +48,9 @@ export default async function DashboardLayout({
                   await signOut({ redirectTo: '/' })
                 }}
               >
-                <button
-                  type="submit"
-                  className="rounded-md border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50"
-                >
+                <Button variant="outline" size="sm">
                   Sign out
-                </button>
+                </Button>
               </form>
             </div>
           </div>
