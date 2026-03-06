@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
+import { CheckCircle2 } from 'lucide-react'
 
 const plans = [
   {
@@ -87,48 +88,49 @@ export default function PricingPage() {
   return (
     <main className="flex min-h-screen flex-col">
       {/* Hero */}
-      <section className="bg-gradient-to-b from-slate-900 to-slate-800 py-24 text-white">
+      <section className="bg-zinc-950 py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            Simple, Transparent Pricing
+            Simple, transparent pricing
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-300">
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
             Start free and scale as you grow. No hidden fees, no surprises.
-            Get everything you need to ship better code.
           </p>
         </div>
       </section>
 
       {/* Pricing Cards */}
-      <section className="-mt-12 py-12">
+      <section className="py-24 bg-white">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid gap-8 lg:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
             {plans.map((plan) => (
               <Card 
                 key={plan.name} 
-                className={`relative flex flex-col ${plan.highlight ? 'border-blue-600 ring-2 ring-blue-600' : ''}`}
+                className={`relative ${
+                  plan.highlight 
+                    ? 'border-zinc-900 ring-1 ring-zinc-900' 
+                    : 'border-zinc-200'
+                }`}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex items-center rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">
-                      Most Popular
-                    </span>
+                  <div className="absolute -top-3 left-6 rounded-full bg-zinc-900 px-3 py-1 text-xs font-medium text-white">
+                    Most popular
                   </div>
                 )}
                 <CardHeader>
-                  <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                  <CardTitle>{plan.name}</CardTitle>
                   <CardDescription>{plan.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="flex-1">
-                  <div className="mb-6">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    <span className="text-slate-600">{plan.period}</span>
-                  </div>
-                  <ul className="space-y-3">
+                <CardContent>
+                  <p className="text-4xl font-bold text-zinc-900">
+                    {plan.price}
+                    <span className="text-lg font-normal text-zinc-500">{plan.period}</span>
+                  </p>
+                  <ul className="mt-8 space-y-4 text-sm text-zinc-600">
                     {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2 text-sm">
-                        <span className="text-blue-600 mt-0.5">✓</span>
-                        <span className="text-slate-600">{feature}</span>
+                      <li key={feature} className="flex items-center gap-3">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                        {feature}
                       </li>
                     ))}
                   </ul>
@@ -136,7 +138,7 @@ export default function PricingPage() {
                 <CardFooter>
                   <Button 
                     asChild 
-                    className={`w-full ${plan.highlight ? '' : 'variant="outline"'}`}
+                    className="w-full"
                     variant={plan.highlight ? 'default' : 'outline'}
                   >
                     <Link href={plan.ctaLink}>{plan.cta}</Link>
@@ -148,84 +150,17 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Feature Comparison */}
-      <section className="py-24 bg-slate-50">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">Compare Plans</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="py-4 text-left font-semibold">Feature</th>
-                  <th className="py-4 text-center font-semibold">Free</th>
-                  <th className="py-4 text-center font-semibold">Pro</th>
-                  <th className="py-4 text-center font-semibold">Team</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-200">
-                <tr>
-                  <td className="py-4 text-slate-600">Audits per month</td>
-                  <td className="py-4 text-center">5</td>
-                  <td className="py-4 text-center">50</td>
-                  <td className="py-4 text-center">Unlimited</td>
-                </tr>
-                <tr>
-                  <td className="py-4 text-slate-600">Security analysis</td>
-                  <td className="py-4 text-center">✓</td>
-                  <td className="py-4 text-center">✓</td>
-                  <td className="py-4 text-center">✓</td>
-                </tr>
-                <tr>
-                  <td className="py-4 text-slate-600">Performance insights</td>
-                  <td className="py-4 text-center">✓</td>
-                  <td className="py-4 text-center">✓</td>
-                  <td className="py-4 text-center">✓</td>
-                </tr>
-                <tr>
-                  <td className="py-4 text-slate-600">CI/CD integration</td>
-                  <td className="py-4 text-center">—</td>
-                  <td className="py-4 text-center">✓</td>
-                  <td className="py-4 text-center">✓</td>
-                </tr>
-                <tr>
-                  <td className="py-4 text-slate-600">API access</td>
-                  <td className="py-4 text-center">—</td>
-                  <td className="py-4 text-center">✓</td>
-                  <td className="py-4 text-center">✓</td>
-                </tr>
-                <tr>
-                  <td className="py-4 text-slate-600">Team collaboration</td>
-                  <td className="py-4 text-center">—</td>
-                  <td className="py-4 text-center">—</td>
-                  <td className="py-4 text-center">✓</td>
-                </tr>
-                <tr>
-                  <td className="py-4 text-slate-600">SSO integration</td>
-                  <td className="py-4 text-center">—</td>
-                  <td className="py-4 text-center">—</td>
-                  <td className="py-4 text-center">✓</td>
-                </tr>
-                <tr>
-                  <td className="py-4 text-slate-600">Support</td>
-                  <td className="py-4 text-center text-sm">Email</td>
-                  <td className="py-4 text-center text-sm">Priority</td>
-                  <td className="py-4 text-center text-sm">Dedicated</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQs */}
-      <section className="py-24">
+      {/* FAQ */}
+      <section className="bg-zinc-50 py-24">
         <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-          <div className="space-y-8">
+          <h2 className="text-3xl font-bold tracking-tight text-zinc-900 text-center">
+            Frequently asked questions
+          </h2>
+          <div className="mt-12 space-y-8">
             {faqs.map((faq) => (
-              <div key={faq.question}>
-                <h3 className="text-lg font-semibold">{faq.question}</h3>
-                <p className="mt-2 text-slate-600">{faq.answer}</p>
+              <div key={faq.question} className="border-b border-zinc-200 pb-6">
+                <h3 className="text-lg font-semibold text-zinc-900">{faq.question}</h3>
+                <p className="mt-3 text-zinc-600 leading-relaxed">{faq.answer}</p>
               </div>
             ))}
           </div>
@@ -233,17 +168,22 @@ export default function PricingPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-slate-900 py-24">
+      <section className="bg-zinc-950 py-24">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <h2 className="text-3xl font-bold text-white sm:text-4xl">
-            Ready to Ship Better Code?
+          <h2 className="text-3xl font-bold tracking-tight text-white">
+            Ready to get started?
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-slate-300">
-            Start your free trial today. No credit card required.
+          <p className="mx-auto mt-4 max-w-xl text-lg text-zinc-400">
+            Start your free audit today. No credit card required.
           </p>
-          <Button asChild size="lg" className="mt-8 bg-blue-600 hover:bg-blue-500">
-            <Link href="/signup">Start Free Audit</Link>
-          </Button>
+          <div className="mt-10 flex items-center justify-center gap-4">
+            <Button asChild size="lg" className="bg-white text-zinc-950 hover:bg-zinc-200">
+              <Link href="/signup">Start free audit</Link>
+            </Button>
+            <Button asChild variant="ghost" size="lg" className="text-zinc-400 hover:text-white">
+              <Link href="/contact">Contact sales</Link>
+            </Button>
+          </div>
         </div>
       </section>
     </main>

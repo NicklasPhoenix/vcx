@@ -1,8 +1,10 @@
+import Link from 'next/link'
 import { auth } from '@/auth'
 import { getUserById } from '@/lib/db'
 import { STRIPE_PLANS } from '@/lib/stripe'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { CheckCircle2 } from 'lucide-react'
 
 export default async function BillingPage() {
   const session = await auth()
@@ -14,13 +16,16 @@ export default async function BillingPage() {
   const hasSubscription = !!user?.stripe_subscription_id
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Billing</h1>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold text-zinc-900">Billing</h1>
+        <p className="mt-1 text-zinc-600">Manage your subscription and billing details.</p>
+      </div>
       
       {hasSubscription ? (
-        <Card>
+        <Card className="border-zinc-200">
           <CardHeader>
-            <CardTitle>Manage Subscription</CardTitle>
+            <CardTitle>Active Subscription</CardTitle>
             <CardDescription>
               You have an active subscription. Manage your billing details, update payment method, or cancel.
             </CardDescription>
@@ -43,16 +48,19 @@ export default async function BillingPage() {
                 redirect(url)
               }}
             >
-              <Button>Manage Billing</Button>
+              <Button className="bg-zinc-900 hover:bg-zinc-800">Manage Billing</Button>
             </form>
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-6">
-          <Card className="border-primary bg-primary/5">
+          <Card className="border-zinc-200 bg-zinc-50">
             <CardContent className="pt-6">
-              <p className="text-sm text-primary">
-                You're currently on the Free plan. Upgrade to get more audits and premium features.
+              <p className="text-sm text-zinc-600">
+                You're currently on the Free plan.{' '}
+                <Link href="/pricing" className="font-medium text-blue-600 hover:text-blue-500">
+                  Upgrade to get more audits and premium features.
+                </Link>
               </p>
             </CardContent>
           </Card>
@@ -61,51 +69,33 @@ export default async function BillingPage() {
             {Object.entries(STRIPE_PLANS).map(([key, plan]) => (
               <Card
                 key={key}
-                className={key === 'pro' ? 'border-primary ring-2 ring-primary' : ''}
+                className={`border-zinc-200 ${key === 'pro' ? 'border-zinc-900 ring-1 ring-zinc-900' : ''}`}
               >
                 <CardHeader>
                   <CardTitle className="capitalize">{plan.name}</CardTitle>
+                  <CardDescription>
+                    {key === 'enterprise' ? 'Custom pricing' : key === 'free' ? '$0/mo' : '$29/mo'}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-3xl font-bold">
-                    {key === 'enterprise' ? 'Custom' : key === 'free' ? '$0' : '$29'}
-                    {key !== 'enterprise' && key !== 'free' && <span className="text-sm font-normal">/mo</span>}
-                  </p>
-                  <ul className="mt-4 space-y-2">
+                  <ul className="space-y-3 text-sm text-zinc-600">
                     {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-center text-sm">
-                        <svg className="mr-2 h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
+                      <li key={feature} className="flex items-center gap-3">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                         {feature}
                       </li>
                     ))}
                   </ul>
                   {key !== 'free' && (
-                    <form
-                      action={async () => {
-                        'use server'
-                        const { redirect } = await import('next/navigation')
-                        const response = await fetch(
-                          `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/subscription`,
-                          {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ action: 'checkout', plan: key }),
-                            cache: 'no-store',
-                          }
-                        )
-                        const { url } = await response.json()
-                        redirect(url)
-                      }}
+                    <Button 
+                      asChild 
+                      className="w-full mt-6"
+                      variant={key === 'pro' ? 'default' : 'outline'}
                     >
-                      <Button 
-                        className="mt-6 w-full" 
-                        variant={key === 'pro' ? 'default' : 'outline'}
-                      >
-                        {key === 'enterprise' ? 'Contact Sales' : 'Subscribe'}
-                      </Button>
-                    </form>
+                      <Link href="/pricing">
+                        {key === 'pro' ? 'Upgrade to Pro' : 'Contact Sales'}
+                      </Link>
+                    </Button>
                   )}
                 </CardContent>
               </Card>

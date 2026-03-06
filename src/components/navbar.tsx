@@ -12,11 +12,10 @@ export async function Navbar() {
   const session = await auth()
   
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold">VCX</span>
-          <span className="text-sm text-slate-600 hidden sm:inline">VibeCode X-Ray</span>
+          <span className="text-xl font-bold text-zinc-900">VibeCode X-Ray</span>
         </Link>
         
         <nav className="hidden md:flex items-center gap-6">
@@ -24,7 +23,7 @@ export async function Navbar() {
             <Link 
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+              className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
             >
               {link.label}
             </Link>
@@ -38,7 +37,7 @@ export async function Navbar() {
                 <Link href="/dashboard">Dashboard</Link>
               </Button>
               <form action="/api/auth/signout" method="POST">
-                <Button type="submit" variant="outline">Sign Out</Button>
+                <Button type="submit" variant="outline" className="border-zinc-300">Sign Out</Button>
               </form>
             </>
           ) : (
@@ -46,7 +45,7 @@ export async function Navbar() {
               <Button variant="ghost" asChild>
                 <Link href="/login">Sign In</Link>
               </Button>
-              <Button asChild>
+              <Button asChild className="bg-zinc-900 hover:bg-zinc-800">
                 <Link href="/signup">Get Started</Link>
               </Button>
             </>
