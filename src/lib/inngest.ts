@@ -1,8 +1,13 @@
-import { Inngest } from 'inngest'
+import { Inngest, NonRetriableError } from 'inngest'
+
+// Create Inngest client with optional API key for build time
+// During build, we use a dummy key to prevent initialization errors
+const eventKey = process.env.INNGEST_EVENT_KEY || 'dev-placeholder-key'
 
 export const inngest = new Inngest({
   id: 'vcx',
   name: 'VibeCode X-Ray',
+  eventKey,
 })
 
 // Define event types
