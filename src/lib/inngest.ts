@@ -1,8 +1,13 @@
-import { Inngest } from 'inngest'
+import { Inngest, NonRetriableError } from 'inngest'
+
+// Create Inngest client with optional API key for build time
+// During build, we use a dummy key to prevent initialization errors
+const eventKey = process.env.INNGEST_EVENT_KEY || 'dev-placeholder-key'
 
 export const inngest = new Inngest({
   id: 'vcx',
   name: 'VibeCode X-Ray',
+  eventKey,
 })
 
 // Define event types
@@ -17,7 +22,11 @@ export const processAudit = inngest.createFunction(
   { id: 'process-audit' },
   { event: events.AUDIT_STARTED },
   async ({ event, step }) => {
-    const { auditId, repository, userId } = event.data
+    const { auditId, repository, userId } = event.data as {
+      auditId: string
+      repository: string
+      userId: string
+    }
 
     // Step 1: Clone repository
     const repoPath = await step.run('clone-repo', async () => {
@@ -52,3 +61,6 @@ export const processAudit = inngest.createFunction(
     return { auditId, status: 'completed', analysis }
   }
 )
+
+// Export all functions for the serve handler
+export const functions = [processAudit]

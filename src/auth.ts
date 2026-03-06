@@ -1,12 +1,15 @@
 import NextAuth from 'next-auth'
-import { NeonAdapter } from '@auth/neon-adapter'
+import NeonAdapter from '@auth/neon-adapter'
+import { Pool } from '@neondatabase/serverless'
 import Google from 'next-auth/providers/google'
 import GitHub from 'next-auth/providers/github'
 import Resend from 'next-auth/providers/resend'
 import type { NextAuthConfig } from 'next-auth'
 
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! })
+
 const config: NextAuthConfig = {
-  adapter: NeonAdapter(process.env.DATABASE_URL!),
+  adapter: NeonAdapter(pool),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID!,
@@ -25,7 +28,6 @@ const config: NextAuthConfig = {
   },
   pages: {
     signIn: '/login',
-    signUp: '/signup',
     error: '/login',
   },
   callbacks: {
