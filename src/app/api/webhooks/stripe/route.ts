@@ -1,6 +1,6 @@
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
-import type { StripeEvent } from 'stripe'
+import Stripe from 'stripe'
 import { stripe, getSubscription } from '@/lib/stripe'
 import { sql } from '@/lib/db'
 
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   const body = await req.text()
   const signature = (await headers()).get('stripe-signature')!
 
-  let event: StripeEvent
+  let event: Stripe.Event
 
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
           SET 
             stripe_subscription_id = ${subscription.id},
             stripe_price_id = ${priceId},
-            stripe_current_period_end = ${new Date(subscription.current_period_end * 1001)}
+            stripe_current_period_end = ${new Date(subscription.current_period_end * 1000)}
           WHERE stripe_customer_id = ${customerId}
         `
         break

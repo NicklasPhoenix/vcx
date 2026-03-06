@@ -17,7 +17,11 @@ export const processAudit = inngest.createFunction(
   { id: 'process-audit' },
   { event: events.AUDIT_STARTED },
   async ({ event, step }) => {
-    const { auditId, repository, userId } = event.data
+    const { auditId, repository, userId } = event.data as {
+      auditId: string
+      repository: string
+      userId: string
+    }
 
     // Step 1: Clone repository
     const repoPath = await step.run('clone-repo', async () => {
@@ -52,3 +56,6 @@ export const processAudit = inngest.createFunction(
     return { auditId, status: 'completed', analysis }
   }
 )
+
+// Export all functions for the serve handler
+export const functions = [processAudit]

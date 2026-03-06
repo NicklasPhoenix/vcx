@@ -1,4 +1,4 @@
-import { User } from 'next-auth'
+import 'next-auth'
 
 declare module 'next-auth' {
   interface User {
@@ -12,9 +12,5 @@ declare module 'next-auth' {
   }
 }
 
-declare module 'next-auth/jwt' {
-  interface JWT {
-    id: string
-    stripeCustomerId?: string | null
-  }
-}
+// Note: next-auth/jwt augmentation is handled in next-auth v5 differently
+// The JWT type is inferred from the callbacks
