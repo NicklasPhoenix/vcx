@@ -19,9 +19,13 @@ const config: NextAuthConfig = {
       clientId: process.env.AUTH_GITHUB_ID!,
       clientSecret: process.env.AUTH_GITHUB_SECRET!,
     }),
-    Resend({
-      from: 'noreply@vcx.dev',
-    }),
+    // Resend provider disabled until API key is configured
+    // Enable by setting AUTH_RESEND_KEY environment variable
+    ...(process.env.AUTH_RESEND_KEY ? [
+      Resend({
+        from: 'noreply@vcx.dev',
+      })
+    ] : []),
   ],
   session: {
     strategy: 'jwt',
