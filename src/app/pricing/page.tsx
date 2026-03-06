@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { CheckCircle2 } from 'lucide-react'
 
 const plans = [
@@ -113,9 +115,9 @@ export default function PricingPage() {
                 }`}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-3 left-6 rounded-full bg-zinc-900 px-3 py-1 text-xs font-medium text-white">
+                  <Badge className="absolute -top-3 left-6 bg-zinc-900">
                     Most popular
-                  </div>
+                  </Badge>
                 )}
                 <CardHeader>
                   <CardTitle>{plan.name}</CardTitle>
@@ -156,14 +158,18 @@ export default function PricingPage() {
           <h2 className="text-3xl font-bold tracking-tight text-zinc-900 text-center">
             Frequently asked questions
           </h2>
-          <div className="mt-12 space-y-8">
+          <Accordion type="single" collapsible className="mt-12 w-full">
             {faqs.map((faq) => (
-              <div key={faq.question} className="border-b border-zinc-200 pb-6">
-                <h3 className="text-lg font-semibold text-zinc-900">{faq.question}</h3>
-                <p className="mt-3 text-zinc-600 leading-relaxed">{faq.answer}</p>
-              </div>
+              <AccordionItem key={faq.question} value={faq.question} className="border-zinc-200">
+                <AccordionTrigger className="text-left text-zinc-900">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-zinc-600">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
       </section>
 

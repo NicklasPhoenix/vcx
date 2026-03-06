@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { auth } from '@/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Skeleton } from '@/components/ui/skeleton'
 import { ArrowRight, FileCode, Shield, Zap } from 'lucide-react'
 
 export default async function DashboardPage() {
@@ -49,7 +51,12 @@ export default async function DashboardPage() {
             <Shield className="h-5 w-5 text-zinc-400" />
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold text-zinc-900">Free</p>
+            <div className="flex items-center gap-2">
+              <p className="text-3xl font-bold text-zinc-900">Free</p>
+              <Badge variant="secondary" className="bg-zinc-100 text-zinc-600">
+                Starter
+              </Badge>
+            </div>
           </CardContent>
         </Card>
         
